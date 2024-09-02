@@ -125,7 +125,7 @@ func BrandsHandlers(w http.ResponseWriter, r *http.Request) {
 	startIndex := (page - 1) * perPage
 	endIndex := startIndex + perPage
 
-	if endIndex > len(brands) {
+	if startIndex > len(brands) {
 		startIndex = len(brands)
 	}
 
