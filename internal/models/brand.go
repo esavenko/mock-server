@@ -12,9 +12,3 @@ type Data struct {
 	TotalPages int      `json:"totalPages"`
 	Items      []Brands `json:"items"`
 }
-
-type ApiResponse struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    Data   `json:"data"`
-}
