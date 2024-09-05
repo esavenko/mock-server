@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"math"
 	"mock/internal/models"
 	"net/http"
 	"strconv"
@@ -135,12 +136,17 @@ func BrandsHandlers(w http.ResponseWriter, r *http.Request) {
 
 	pagedBrands := brands[startIndex:endIndex]
 
-	response := map[string]interface{}{
-		"totalCount":     len(brands),
-		"pageSize":       perPage,
-		"page":           page,
-		"totalPageCount": (len(brands) + perPage - 1) / perPage,
-		"data":           pagedBrands,
+	totalPages := int(math.Ceil(float64(len(brands)) / float64(perPage)))
+
+	response := models.APIResponse{
+		Code:    200,
+		Message: "ok",
+		Data: models.Data{
+			Total:      len(brands),
+			PerPage:    perPage,
+			TotalPages: totalPages,
+			Items:      pagedBrands,
+		},
 	}
 
 	w.Header().Set("Content-Type", "application/json")
