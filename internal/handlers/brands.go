@@ -10,7 +10,7 @@ import (
 
 func BrandsHandlers(w http.ResponseWriter, r *http.Request) {
 	pageParam := r.URL.Query().Get("page")
-	perPageParam := r.URL.Query().Get("pageSize")
+	perPageParam := r.URL.Query().Get("limit")
 
 	page, err := strconv.Atoi(pageParam)
 	if err != nil || page < 1 {
