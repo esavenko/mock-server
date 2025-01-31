@@ -1,17 +1,31 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"mock/config"
 	"mock/internal/handlers"
 	"mock/internal/middleware"
+	"mock/internal/repository"
 	"net/http"
 )
 
 func main() {
-	mux := http.NewServeMux()
+	cfg := config.LoadConfig()
 
-	mux.HandleFunc("/api/v1/brands", handlers.BrandsHandlers)
+	db, err := sql.Open("sqlite3", cfg.DBPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	brandRepo := repository.NewBrandRepository(db)
+	brandHandler := handlers.NewBrandHandler(brandRepo)
+
+	mux := http.NewServeMux()
+	mux.Handle("/api/v1/brands", http.HandlerFunc(brandHandler.GetBrands))
 
 	fmt.Println("Mock server at :4200")
 

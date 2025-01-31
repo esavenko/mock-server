@@ -1,0 +1,2 @@
+db_path: "./db/mock.db"
+port: "4200"
